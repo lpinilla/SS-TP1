@@ -3,37 +3,47 @@ package ar.edu.itba.grupo3.TP;
 import java.util.List;
 
 public class Particle {
-    double x; //x posicion of particle
-    double y; //y posicion of particle
-    int id; //id of particle
-    double radius; //radius of particle
+    Double x; //x position of particle
+    Double y; //y position of particle
+    Integer id; //id of particle
+    Double radius; //radius of particle
+    Double property; //value of property
     List<Particle> neighbours; //list of neighbours
 
     //Vamos a tener una lista de particulas general, la primer particula de la lista hace referencia a la particula "padre" ubicada en el casillero cero
     //la segunda particula del array hace referencia a la particula "padre" ubicada en el segundo casillero del tablero....
     //"padre" llamamos a la primer particula que esta ubicada en ese casillero. el next de esa particula, hace refernecia
     //a otra particula ubicada en el mismo casillero
-    List<Particle> next;
+    List<Particle> particlesSameCellList;
 
-    public Particle(double x, double y, double radious) {
+    public Particle(Double x, Double y, Double radius, Double property) {
         this.x = x;
         this.y = y;
-        this.radius = radious;
+        this.radius = radius;
+        this.property = property;
     }
 
-    public void setX(double x) {
+    public Particle(Double radius, Double property, Integer id){
+        this.radius = radius;
+        this.property = property;
+        this.id = id;
+        this.x = -1.0; //placeholder
+        this.y = -1.0; //placeholder
+    }
+
+    public void setX(Double x) {
         this.x = x;
     }
 
-    public void setY(double y) {
+    public void setY(Double y) {
         this.y = y;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public void setRadius(double radius) {
+    public void setRadius(Double radius) {
         this.radius = radius;
     }
 
@@ -41,23 +51,23 @@ public class Particle {
         this.neighbours = neighbours;
     }
 
-    public void setNext(List<Particle> next) {
-        this.next = next;
+    public void setParticlesSameCellList(List<Particle> particlesSameCellList) {
+        this.particlesSameCellList = particlesSameCellList;
     }
 
-    public double getX() {
+    public Double getX() {
         return x;
     }
 
-    public double getY() {
+    public Double getY() {
         return y;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public double getRadious() {
+    public Double getRadious() {
         return radius;
     }
 
@@ -65,7 +75,8 @@ public class Particle {
         return neighbours;
     }
 
-    public List<Particle> getNext() {
-        return next;
+    public List<Particle> getParticlesSameCellList() {
+        return particlesSameCellList;
     }
+
 }

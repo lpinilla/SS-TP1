@@ -12,10 +12,7 @@ public class Main
 {
     public static void main( String[] args )
     {
-        Particle p=new Particle(0,0,0);
-        System.out.println( "Particle "+p.x );
-
-
-
+        //Particle p=new Particle(0,0,0);
+        //System.out.println( "Particle "+p.x );
     }
 }
