@@ -8,11 +8,26 @@ package ar.edu.itba.grupo3.TP;
 // i+1
 // i+1+m
 
-public class Main
-{
-    public static void main( String[] args )
-    {
-        //Particle p=new Particle(0,0,0);
-        //System.out.println( "Particle "+p.x );
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+//        Particle p = new Particle(0, 0, 0);
+//        System.out.println("Particle " + p.x);
+//        GenerateInput.inputGenerator();
+
+
     }
+
+
+
 }
+
+
+
+
+
