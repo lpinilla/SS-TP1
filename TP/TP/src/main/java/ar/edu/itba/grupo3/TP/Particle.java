@@ -61,6 +61,14 @@ public class Particle {
         this.particlesSameCellList = particlesSameCellList;
     }
 
+    public Double getProperty() {
+        return property;
+    }
+
+    public void setProperty(Double property) {
+        this.property = property;
+    }
+
     public Double getX() {
         return x;
     }
