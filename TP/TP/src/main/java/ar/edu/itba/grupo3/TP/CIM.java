@@ -20,6 +20,7 @@ public class CIM {
     private int m; //number of cells per side
     private float cellSize;//size of cell
     private boolean periodicEnvironment;
+    private boolean measureRadius;
 
     public List<Particle> getHeads() { return heads; }
 
@@ -45,7 +46,14 @@ public class CIM {
 
     public void setM(int m) { this.m = m; }
 
-    public CIM(int n, float l, float rc, int m, boolean periodicEnvironment) throws IllegalArgumentException {
+    private void populateArrays(){
+        for(int i = 0; i < n; i++){
+            this.heads.add(null);
+        }
+    }
+
+
+    public CIM(int n, float l, float rc, int m, boolean periodicEnvironment, boolean measureRadius) throws IllegalArgumentException {
         if(n <= 0 || l <= 0 || rc <= 0 || m <= 0) throw new IllegalArgumentException("incorrect arguments");
         if((l / m) <= rc) throw new IllegalArgumentException("No se cumple la condición 'l / m > rc'");
         this.heads = new ArrayList<>();
@@ -57,15 +65,18 @@ public class CIM {
                 return true;
             }
         };
+
         this.n = n;
         this.l = l;
         this.rc = rc;
         this.m = m;
         this.cellSize = l/m;
         this.periodicEnvironment = periodicEnvironment;
+        this.measureRadius = measureRadius;
+        populateArrays();
     }
 
-    public CIM(int m, float rc, boolean periodicEnvironment, String path) throws IllegalArgumentException{
+    public CIM(int m, float rc, boolean periodicEnvironment, boolean measureRadius, String path) throws IllegalArgumentException{
         if(path.isEmpty()) throw new IllegalArgumentException("empty path");
         if(m <= 0 || rc <= 0) throw new IllegalArgumentException("Wrong arguments");
         this.heads = new ArrayList<>();
@@ -79,10 +90,12 @@ public class CIM {
         };
         this.rc = rc;
         this.m = m;
-        this.cellSize = l/m;
         this.periodicEnvironment = periodicEnvironment;
+        this.measureRadius = measureRadius;
         loadStaticFile(path);
+        this.cellSize = l/m;
         if((l / m) <= rc) throw new IllegalArgumentException("No se cumple la condición 'l / m > rc'");
+        populateArrays();
     }
 
     public void loadStaticFile(String path) {
@@ -96,11 +109,11 @@ public class CIM {
             //particles
             int index = 0;
             while( (s = br.readLine()) != null){
-                String[] rad_prop = s.split("   ");
+                String[] rad_prop = s.split(" {3}");
                 this.allParticles.add(
                         new Particle(
-                                new Double(rad_prop[0]),
-                                new Double(rad_prop[1]),
+                                Double.parseDouble(rad_prop[0]),
+                                Double.parseDouble(rad_prop[1]),
                                 index));
                 index++;
             }
@@ -120,10 +133,10 @@ public class CIM {
             int index = 0;
             Particle aux;
             while( (s = br.readLine()) != null){
-                String[] position = s.split("   ");
+                String[] position = s.split(" {3}");
                 aux = this.allParticles.get(index);
-                aux.setX(new Double(position[0]));
-                aux.setY(new Double(position[1]));
+                aux.setX(Double.parseDouble(position[0]));
+                aux.setY(Double.parseDouble(position[1]));
                 putInCell(aux);
                 index++;
             }
@@ -134,9 +147,8 @@ public class CIM {
 
     private void putInCell(Particle p){
         int arrPos = getParticleCurrentCell(p);
-        System.out.println(arrPos);
         if(this.heads.get(arrPos) == null){
-            this.heads.add(arrPos, p);
+            this.heads.set(arrPos, p);
         }else{
             this.heads.get(arrPos).getParticlesSameCellList().add(p);
         }
@@ -176,20 +188,20 @@ public class CIM {
     }
 
     public List<Particle> getParticleNeighbors(Particle p){
-        //find out where it is
         List<Particle> ret = new ArrayList<>();
+        //find out where it is
         int cellNumber = getParticleCurrentCell(p);
         double deltaX, deltaY;
         double dist;
+        double measureRadiusYesNo = (measureRadius) ? 1.0 : 0.0;
         List<Particle> neighborCells = getNeighborCells(cellNumber);
         for(Particle cellNeighbor : neighborCells){
             for(Particle cellParticle : cellNeighbor.getParticlesSameCellList()){
                 deltaX = cellParticle.getX() - p.getX();
                 deltaY = cellParticle.getY() - p.getY();
-                dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY) - (cellParticle.getRadious() + p.getRadious());
-                if(dist < getRc()){
-                    ret.add(cellParticle);
-                }
+                dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY) -
+                       ((cellParticle.getRadious() + p.getRadious()) * measureRadiusYesNo);
+                if(dist < getRc()) ret.add(cellParticle);
             }
         }
         return ret;

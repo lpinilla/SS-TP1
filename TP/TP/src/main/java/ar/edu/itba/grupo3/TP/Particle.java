@@ -1,5 +1,7 @@
 package ar.edu.itba.grupo3.TP;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Particle {
@@ -21,6 +23,8 @@ public class Particle {
         this.y = y;
         this.radius = radius;
         this.property = property;
+        this.neighbours = new LinkedList<>();
+        this.particlesSameCellList = new LinkedList<>();
     }
 
     public Particle(Double radius, Double property, Integer id){
@@ -29,6 +33,8 @@ public class Particle {
         this.id = id;
         this.x = -1.0; //placeholder
         this.y = -1.0; //placeholder
+        this.neighbours = new LinkedList<>();
+        this.particlesSameCellList = new LinkedList<>();
     }
 
     public void setX(Double x) {
