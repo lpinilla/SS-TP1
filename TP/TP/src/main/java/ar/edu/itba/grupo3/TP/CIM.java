@@ -61,7 +61,7 @@ public class CIM {
             @Override
             public boolean add(Particle p){
                 super.add(p);
-                allParticles.sort(Comparator.comparing((Particle p2) -> p2.id));
+                allParticles.sort(Comparator.comparing((Particle p2) -> p2.getId()));
                 return true;
             }
         };
@@ -84,7 +84,7 @@ public class CIM {
             @Override
             public boolean add(Particle p){
                 super.add(p);
-                allParticles.sort(Comparator.comparing((Particle p2) -> p2.id));
+                allParticles.sort(Comparator.comparing((Particle p2) -> p2.getId()));
                 return true;
             }
         };
@@ -188,7 +188,6 @@ public class CIM {
     }
 
     public List<Particle> getParticleNeighbors(Particle p){
-        List<Particle> ret = new ArrayList<>();
         //find out where it is
         int cellNumber = getParticleCurrentCell(p);
         double deltaX, deltaY;
@@ -196,15 +195,20 @@ public class CIM {
         double measureRadiusYesNo = (measureRadius) ? 1.0 : 0.0;
         List<Particle> neighborCells = getNeighborCells(cellNumber);
         for(Particle cellNeighbor : neighborCells){
+            if(cellNeighbor == null) continue;
             for(Particle cellParticle : cellNeighbor.getParticlesSameCellList()){
                 deltaX = cellParticle.getX() - p.getX();
                 deltaY = cellParticle.getY() - p.getY();
                 dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY) -
                        ((cellParticle.getRadious() + p.getRadious()) * measureRadiusYesNo);
-                if(dist < getRc()) ret.add(cellParticle);
+                //check if it's neighbor
+                if(dist < getRc()){
+                    p.getNeighbours().add(cellParticle);
+                    cellParticle.getNeighbours().add(p);
+                }
             }
         }
-        return ret;
+        return p.getNeighbours();
     }
 
 }

@@ -5,18 +5,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Particle {
-    Double x; //x position of particle
-    Double y; //y position of particle
-    Integer id; //id of particle
-    Double radius; //radius of particle
-    Double property; //value of property
-    List<Particle> neighbours; //list of neighbours
+    private Double x; //x position of particle
+    private Double y; //y position of particle
+    private Integer id; //id of particle
+    private Double radius; //radius of particle
+    private Double property; //value of property
+    private List<Particle> neighbours; //list of neighbours
 
     //Vamos a tener una lista de particulas general, la primer particula de la lista hace referencia a la particula "padre" ubicada en el casillero cero
     //la segunda particula del array hace referencia a la particula "padre" ubicada en el segundo casillero del tablero....
     //"padre" llamamos a la primer particula que esta ubicada en ese casillero. el next de esa particula, hace refernecia
     //a otra particula ubicada en el mismo casillero
-    List<Particle> particlesSameCellList;
+    private List<Particle> particlesSameCellList;
 
     public Particle(Double x, Double y, Double radius, Double property) {
         this.x = x;
@@ -83,6 +83,10 @@ public class Particle {
 
     public List<Particle> getParticlesSameCellList() {
         return particlesSameCellList;
+    }
+
+    public String toString(){
+        return this.getId().toString();
     }
 
 }
