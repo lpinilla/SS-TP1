@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CIMTest {
 
@@ -53,7 +52,26 @@ public class CIMTest {
         //particle 0 -> cell 40 -> neighbor cells [40, 50, 51, 41, 31]
         List<Integer> lCells = Arrays.asList(40, 50, 51, 41, 31);
         Assert.assertArrayEquals(
-                cim.getHeads().values().stream().filter(p -> lCells.contains(cim.getParticleCurrentCell(p))).toArray(),
-                cim.getNeighborCells(9).stream().map(Particle::getId).toArray());
+                lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
+                cim.getLShapeHeaders(40).stream().map(Particle::getId).toArray());
+    }
+
+    @Test
+    public void getNeighborCellTest2(){
+        //particle ? -> cell 0 -> neighbor cells [0, 10, 11, 1, -11]
+        List<Integer> lCells = Arrays.asList(0, 10, 11, 1, -11);
+        Assert.assertArrayEquals(
+                lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
+                cim.getLShapeHeaders(0).stream().map(Particle::getId).toArray());
+    }
+
+
+    @Test
+    public void getNeighborCellTest3(){
+        //particle ? -> cell 97 -> neighbor cells [97, 107, 108, 98, 88]
+        List<Integer> lCells = Arrays.asList(97, 107, 108, 98, 88);
+        Assert.assertArrayEquals(
+                lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
+                cim.getLShapeHeaders(97).stream().map(Particle::getId).toArray());
     }
 }

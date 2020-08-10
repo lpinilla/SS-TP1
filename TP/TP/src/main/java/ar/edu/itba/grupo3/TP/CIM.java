@@ -136,6 +136,7 @@ public class CIM {
 
     private void putInCell(Particle p){
         int arrPos = getParticleCurrentCell(p);
+        if(arrPos == -1) return;
         if(this.heads.get(arrPos) == null){
             this.heads.put(arrPos, p);
         }else{
@@ -143,31 +144,31 @@ public class CIM {
         }
     }
 
-    public List<Particle> getNeighborCells(int i){
+    public List<Particle> getLShapeHeaders(int cell){
         List<Particle> neighborCells = new ArrayList<>();
         //if periodicEnvironment is set, apply modulus m to all calculations
-        neighborCells.add(heads.get(i));
+        neighborCells.add(heads.get(cell));
         int aux = (periodicEnvironment) ? m : m * m;
         Particle p;
         //up
-        if(i + m < getHeads().size()){
-            p = heads.get(i + m % aux);
-            if (p != null) neighborCells.add(heads.get(i + m % aux));
+        if(cell + m < m * m){
+            p = heads.get(cell + m % aux);
+            if (p != null) neighborCells.add(heads.get(cell + m % aux));
         }
         //upper right
-        if(i + m + 1  < getHeads().size()){
-            p = heads.get(i + m % aux);
-            if (p != null) neighborCells.add(heads.get(i + m % aux));
+        if(cell + m + 1  < m * m){
+            p = heads.get(cell + m + 1 % aux);
+            if (p != null) neighborCells.add(heads.get(cell + m + 1 % aux));
         }
         //right
-        if(i + 1 < getM()){
-            p = heads.get(i+1 % aux);
-            if ( p != null) neighborCells.add(heads.get(i+1 % aux));
+        if(cell + 1 < (cell / 10 + 1) * m){
+            p = heads.get(cell+1 % aux);
+            if ( p != null) neighborCells.add(heads.get(cell + 1 % aux));
         }
         //bottom right
-        if(i + 1 - m > 0){
-            p = heads.get(i+1-m % aux);
-            if (p != null) neighborCells.add(heads.get(i+1-m % aux));
+        if(cell + 1 - m > 0){
+            p = heads.get(cell+1-m % aux);
+            if (p != null) neighborCells.add(heads.get(cell+1-m % aux));
         }
         return neighborCells;
     }
@@ -190,7 +191,7 @@ public class CIM {
         double deltaX, deltaY;
         double dist;
         double measureRadiusYesNo = (measureRadius) ? 1.0 : 0.0;
-        List<Particle> neighborCells = getNeighborCells(cellNumber);
+        List<Particle> neighborCells = getLShapeHeaders(cellNumber);
         for(Particle cellNeighbor : neighborCells){
             if(cellNeighbor == null) continue;
             for(Particle cellParticle : cellNeighbor.getParticlesSameCellList()){
