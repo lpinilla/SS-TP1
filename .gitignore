@@ -12,3 +12,5 @@ buildNumber.properties
 TP/.idea/*
 
 \.idea/
+
+TP/TP/TP\.iml
