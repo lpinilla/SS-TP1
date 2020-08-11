@@ -1,16 +1,17 @@
 package ar.edu.itba.grupo3.TP;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-public class Particle {
+public class Particle implements Comparable<Particle> {
     private Double x; //x position of particle
     private Double y; //y position of particle
     private Integer id; //id of particle
     private Double radius; //radius of particle
     private Double property; //value of property
-    private List<Particle> neighbours; //list of neighbours
+    private Set<Particle> neighbours; //list of neighbours
 
     //Vamos a tener una lista de particulas general, la primer particula de la lista hace referencia a la particula "padre" ubicada en el casillero cero
     //la segunda particula del array hace referencia a la particula "padre" ubicada en el segundo casillero del tablero....
@@ -23,7 +24,7 @@ public class Particle {
         this.y = y;
         this.radius = radius;
         this.property = property;
-        this.neighbours = new LinkedList<>();
+        this.neighbours = new TreeSet<>();
         this.particlesSameCellList = new LinkedList<>();
         this.particlesSameCellList.add(this);
     }
@@ -34,7 +35,7 @@ public class Particle {
         this.id = id;
         this.x = -1.0; //placeholder
         this.y = -1.0; //placeholder
-        this.neighbours = new LinkedList<>();
+        this.neighbours = new TreeSet<>();
         this.particlesSameCellList = new LinkedList<>();
         this.particlesSameCellList.add(this);
     }
@@ -55,7 +56,7 @@ public class Particle {
         this.radius = radius;
     }
 
-    public void setNeighbours(List<Particle> neighbours) {
+    public void setNeighbours(Set<Particle> neighbours) {
         this.neighbours = neighbours;
     }
 
@@ -87,7 +88,7 @@ public class Particle {
         return radius;
     }
 
-    public List<Particle> getNeighbours() {
+    public Set<Particle> getNeighbours() {
         return neighbours;
     }
 
@@ -104,5 +105,10 @@ public class Particle {
         if(o == this) return true;
         Particle p = (Particle) o;
         return this.id.equals(p.id);
+    }
+
+    @Override
+    public int compareTo(Particle particle) {
+        return this.getId().compareTo(particle.getId());
     }
 }

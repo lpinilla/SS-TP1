@@ -145,7 +145,7 @@ public class CIM {
     public List<Particle> getLShapeHeaders(int cell){
         List<Particle> neighborCells = new ArrayList<>();
         //if periodicEnvironment is set, apply modulus m to all calculations
-        //neighborCells.add(heads.get(cell));
+        neighborCells.add(heads.get(cell));
         int aux = (periodicEnvironment) ? m : m * m;
         Particle p;
         //up
@@ -182,7 +182,7 @@ public class CIM {
         return getLShapeNeighborParticles(p).stream().map(Particle::getId).collect(Collectors.toList());
     }
 
-    public List<Particle> getLShapeNeighborParticles(Particle p){
+    public Set<Particle> getLShapeNeighborParticles(Particle p){
         //find out where it is
         if(p == null) return null;
         int cellNumber = getParticleCurrentCell(p);
@@ -213,12 +213,9 @@ public class CIM {
         Particle currentCellHead;
         for(Integer cellNumber : getHeads().keySet()){
             currentCellHead = getHeads().get(cellNumber);
-            //check particles from same cell
-            for(Particle p : currentCellHead.getParticlesFromCell()) addIfInRange(currentCellHead, p, radiusMultiplier);
-            //for each L shape cell, check from all my particles to all of their particles
             for(Particle heads : getLShapeHeaders(cellNumber)){
                 for(Particle possibleNeighbor : heads.getParticlesFromCell()){
-                    for(Particle particleInCurrentCell : currentCellHead.getParticlesFromCell()) {
+                    for(Particle particleInCurrentCell : currentCellHead.getParticlesFromCell()){
                         addIfInRange(particleInCurrentCell, possibleNeighbor, radiusMultiplier);
                     }
                 }
