@@ -1,13 +1,12 @@
-function CellIndexMethod (number)
+function CellIndexMethod(number)
 #cargo el archivo con todas las particulas
-particles = dlmread("SS-TP1/ArchivosEjemplo/ArchivosEjemplo/Dynamic100.txt",'', 1, 0);
+particles = dlmread("../TP/TP/resources/Dynamic100.txt",'', 1, 0);
 cant_particles=length(particles);
 
 #cargo el archivo con todos los neighbours
-neighbours =  dlmread("SS-TP1/ArchivosEjemplo/ArchivosEjemplo/AlgunosVecinos_100_rc6.txt",',', 0, 0);
+neighbours =  dlmread("../TP/TP/resources/AlgunosVecinos_100_rc6.txt",',', 0, 0);
 
 #guardo la fila de la particula que quiero ver los neighbours
-#TODO ver manera de pasar ese numero por parametro
 interest_particle = neighbours(number,:);
 cant_neigh=length(interest_particle);
 
@@ -21,7 +20,7 @@ hold on
 m=interest_particle(1,1)
 x1=particles(m,1)
 y1=particles(m,2)
-plot(x1,y1,'o-r')
+plot(x1,y1,'r*')
 hold on
 
 #dibujo los neighbours de la particula en cuestion
@@ -30,11 +29,12 @@ for i = 2:cant_neigh
    if n!=0
    x2=particles(n,1)
    y2=particles(n,2)
-   plot(x2,y2,'o-g')
+   plot(x2,y2,'g*')
    hold on
    endif
 endfor
 
 title("Grafico de particulas y vecinos")
+legend('Todas Las Particulas','Particula','Vecinos','Location','SouthOutside')
 endfunction
 
