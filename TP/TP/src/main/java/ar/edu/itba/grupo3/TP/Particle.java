@@ -89,7 +89,7 @@ public class Particle {
         return neighbours;
     }
 
-    public List<Particle> getParticlesSameCellList() {
+    public List<Particle> getParticlesFromCell() {
         return particlesSameCellList;
     }
 

@@ -9,16 +9,15 @@ import java.util.stream.Collectors;
 
 public class CIM {
 
-    //private List<Particle> heads; //all the matrix
     private Map<Integer, Particle> heads;
     private List<Particle> allParticles;
     private int n; //total number of particles
     private float l; //total length
     private float rc; //Force radius
     private int m; //number of cells per side
-    private float cellSize;//size of cell
-    private boolean periodicEnvironment;
-    private boolean measureRadius;
+    private final float cellSize;//size of cell
+    private final boolean periodicEnvironment;
+    private final boolean measureRadius;
 
     public Map<Integer, Particle> getHeads() { return heads; }
 
@@ -56,7 +55,6 @@ public class CIM {
                 return true;
             }
         };
-
         this.n = n;
         this.l = l;
         this.rc = rc;
@@ -140,7 +138,7 @@ public class CIM {
         if(this.heads.get(arrPos) == null){
             this.heads.put(arrPos, p);
         }else{
-            this.heads.get(arrPos).getParticlesSameCellList().add(p);
+            this.heads.get(arrPos).getParticlesFromCell().add(p);
         }
     }
 
@@ -181,10 +179,10 @@ public class CIM {
     }
 
     public List<Integer> getParticleNeighborsIds(Particle p){
-        return getParticleNeighbors(p).stream().map(Particle::getId).collect(Collectors.toList());
+        return getLShapeNeighborParticles(p).stream().map(Particle::getId).collect(Collectors.toList());
     }
 
-    public List<Particle> getParticleNeighbors(Particle p){
+    public List<Particle> getLShapeNeighborParticles(Particle p){
         //find out where it is
         if(p == null) return null;
         int cellNumber = getParticleCurrentCell(p);
@@ -194,7 +192,7 @@ public class CIM {
         List<Particle> neighborCells = getLShapeHeaders(cellNumber);
         for(Particle cellNeighbor : neighborCells){
             if(cellNeighbor == null) continue;
-            for(Particle cellParticle : cellNeighbor.getParticlesSameCellList()){
+            for(Particle cellParticle : cellNeighbor.getParticlesFromCell()){
                 deltaX = cellParticle.getX() - p.getX();
                 deltaY = cellParticle.getY() - p.getY();
                 dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY) -
@@ -207,6 +205,35 @@ public class CIM {
             }
         }
         return p.getNeighbours();
+    }
+
+
+    public void calculateNeighbors(){
+        double measureRadiusYesNo = (measureRadius) ? 1.0 : 0.0;
+        Particle currentCell;
+        for(Integer cellNumber : getHeads().keySet()){
+            currentCell = getHeads().get(cellNumber);
+            for(Particle heads : getLShapeHeaders(cellNumber)){
+                for(Particle possibleNeighbor : heads.getParticlesFromCell()){
+                    addIfInRange(currentCell, possibleNeighbor, measureRadiusYesNo);
+                    for(Particle particleInCurrentCell : currentCell.getParticlesFromCell()) {
+                        addIfInRange(particleInCurrentCell, possibleNeighbor, measureRadiusYesNo);
+                    }
+                }
+            }
+        }
+    }
+
+    public void addIfInRange(Particle p1, Particle p2, double measureRadiusYesNo){
+        double deltaX = p2.getX() - p1.getX();
+        double deltaY = p2.getY() - p1.getY();
+        double dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY) -
+                ((p2.getRadious() + p1.getRadious()) * measureRadiusYesNo);
+        //check if it's neighbor
+        if(dist < getRc()){
+            p1.getNeighbours().add(p2);
+            p2.getNeighbours().add(p1);
+        }
     }
 
 }

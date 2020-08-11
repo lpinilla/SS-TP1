@@ -1,14 +1,14 @@
 function CellIndexMethod (number)
 #cargo el archivo con todas las particulas
-particles = dlmread("SS-TP1/ArchivosEjemplo/ArchivosEjemplo/Dynamic100.txt",'', 1, 0);
+particles = dlmread("../ArchivosEjemplo/Dynamic100.txt",'', 1, 0);
 cant_particles=length(particles);
 
 #cargo el archivo con todos los neighbours
-neighbours =  dlmread("SS-TP1/ArchivosEjemplo/ArchivosEjemplo/AlgunosVecinos_100_rc6.txt",',', 0, 0);
+neighbours =  dlmread("../ArchivosEjemplo/AlgunosVecinos_100_rc6.txt",',', 0, 0);
 
 #guardo la fila de la particula que quiero ver los neighbours
 #TODO ver manera de pasar ese numero por parametro
-interest_particle = neighbours(number,:);
+interest_particle = neighbours(1,:);
 cant_neigh=length(interest_particle);
 
 #dibujo todas las particulas

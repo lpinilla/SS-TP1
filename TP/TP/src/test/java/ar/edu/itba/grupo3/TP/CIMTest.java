@@ -13,7 +13,7 @@ public class CIMTest {
     @Before
     public void createCIM(){
         //m = 10 -> cell_size = 10
-        cim = new CIM(10, (float) 1.0, false, false, "resources/Static100.txt");
+        cim = new CIM(10, (float) 8.5, false, false, "resources/Static100.txt");
         cim.loadDynamicFile("resources/Dynamic100.txt"); //n = 100, l = 100
     }
 
@@ -73,5 +73,17 @@ public class CIMTest {
         Assert.assertArrayEquals(
                 lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
                 cim.getLShapeHeaders(97).stream().map(Particle::getId).toArray());
+    }
+
+    @Test
+    public void getLShapeNeighborsParticlesTest(){
+        List<Particle> list = cim.getLShapeNeighborParticles(cim.getAllParticles().get(0));
+        System.out.println(list);
+    }
+
+    @Test
+    public void calculateNeighborsTest(){
+        cim.calculateNeighbors();
+        System.out.println(cim.getAllParticles().get(0).getNeighbours());
     }
 }
