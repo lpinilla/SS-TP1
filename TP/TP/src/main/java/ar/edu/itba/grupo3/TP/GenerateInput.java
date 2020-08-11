@@ -22,7 +22,7 @@ public class GenerateInput {
         //double rc = r.nextDouble(); //entre 0 y 1?
 
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(new File("RandomStaticInput.txt")));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File("resources/RandomStaticInput.txt")));
             writer.write(Integer.toString(N));
             writer.newLine();
             writer.write(Integer.toString(L));
@@ -49,7 +49,7 @@ public class GenerateInput {
         }
 
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(new File("RandomDynamicInput.txt")));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File("resources/RandomDynamicInput.txt")));
 
             writer.write("0"); //time of dynamic particles.
             writer.newLine();
