@@ -145,7 +145,7 @@ public class CIM {
     public List<Particle> getLShapeHeaders(int cell){
         List<Particle> neighborCells = new ArrayList<>();
         //if periodicEnvironment is set, apply modulus m to all calculations
-        neighborCells.add(heads.get(cell));
+        //neighborCells.add(heads.get(cell));
         int aux = (periodicEnvironment) ? m : m * m;
         Particle p;
         //up
@@ -209,15 +209,17 @@ public class CIM {
 
 
     public void calculateNeighbors(){
-        double measureRadiusYesNo = (measureRadius) ? 1.0 : 0.0;
-        Particle currentCell;
+        double radiusMultiplier = (measureRadius) ? 1.0 : 0.0;
+        Particle currentCellHead;
         for(Integer cellNumber : getHeads().keySet()){
-            currentCell = getHeads().get(cellNumber);
+            currentCellHead = getHeads().get(cellNumber);
+            //check particles from same cell
+            for(Particle p : currentCellHead.getParticlesFromCell()) addIfInRange(currentCellHead, p, radiusMultiplier);
+            //for each L shape cell, check from all my particles to all of their particles
             for(Particle heads : getLShapeHeaders(cellNumber)){
                 for(Particle possibleNeighbor : heads.getParticlesFromCell()){
-                    addIfInRange(currentCell, possibleNeighbor, measureRadiusYesNo);
-                    for(Particle particleInCurrentCell : currentCell.getParticlesFromCell()) {
-                        addIfInRange(particleInCurrentCell, possibleNeighbor, measureRadiusYesNo);
+                    for(Particle particleInCurrentCell : currentCellHead.getParticlesFromCell()) {
+                        addIfInRange(particleInCurrentCell, possibleNeighbor, radiusMultiplier);
                     }
                 }
             }
@@ -225,11 +227,12 @@ public class CIM {
     }
 
     public void addIfInRange(Particle p1, Particle p2, double measureRadiusYesNo){
+        if(p1.equals(p2)) return;
         double deltaX = p2.getX() - p1.getX();
         double deltaY = p2.getY() - p1.getY();
         double dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY) -
                 ((p2.getRadious() + p1.getRadious()) * measureRadiusYesNo);
-        //check if it's neighbor
+        //check if distance is withing rc
         if(dist < getRc()){
             p1.getNeighbours().add(p2);
             p2.getNeighbours().add(p1);

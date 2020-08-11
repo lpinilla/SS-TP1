@@ -25,6 +25,7 @@ public class Particle {
         this.property = property;
         this.neighbours = new LinkedList<>();
         this.particlesSameCellList = new LinkedList<>();
+        this.particlesSameCellList.add(this);
     }
 
     public Particle(Double radius, Double property, Integer id){
@@ -35,6 +36,7 @@ public class Particle {
         this.y = -1.0; //placeholder
         this.neighbours = new LinkedList<>();
         this.particlesSameCellList = new LinkedList<>();
+        this.particlesSameCellList.add(this);
     }
 
     public void setX(Double x) {
@@ -97,4 +99,10 @@ public class Particle {
         return this.getId().toString();
     }
 
+    public boolean equals(Object o){
+        if(o == null || o.getClass() != this.getClass()) return false;
+        if(o == this) return true;
+        Particle p = (Particle) o;
+        return this.id.equals(p.id);
+    }
 }

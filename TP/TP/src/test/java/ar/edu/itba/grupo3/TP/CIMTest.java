@@ -13,7 +13,7 @@ public class CIMTest {
     @Before
     public void createCIM(){
         //m = 10 -> cell_size = 10
-        cim = new CIM(10, (float) 8.5, false, false, "resources/Static100.txt");
+        cim = new CIM(10, (float) 8, false, false, "resources/Static100.txt");
         cim.loadDynamicFile("resources/Dynamic100.txt"); //n = 100, l = 100
     }
 
@@ -50,7 +50,7 @@ public class CIMTest {
     @Test
     public void getNeighborCellTest(){
         //particle 0 -> cell 40 -> neighbor cells [40, 50, 51, 41, 31]
-        List<Integer> lCells = Arrays.asList(40, 50, 51, 41, 31);
+        List<Integer> lCells = Arrays.asList(50, 51, 41, 31);
         Assert.assertArrayEquals(
                 lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
                 cim.getLShapeHeaders(40).stream().map(Particle::getId).toArray());
@@ -59,7 +59,7 @@ public class CIMTest {
     @Test
     public void getNeighborCellTest2(){
         //particle ? -> cell 0 -> neighbor cells [0, 10, 11, 1, -11]
-        List<Integer> lCells = Arrays.asList(0, 10, 11, 1, -11);
+        List<Integer> lCells = Arrays.asList(10, 11, 1, -11);
         Assert.assertArrayEquals(
                 lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
                 cim.getLShapeHeaders(0).stream().map(Particle::getId).toArray());
@@ -69,10 +69,19 @@ public class CIMTest {
     @Test
     public void getNeighborCellTest3(){
         //particle ? -> cell 97 -> neighbor cells [97, 107, 108, 98, 88]
-        List<Integer> lCells = Arrays.asList(97, 107, 108, 98, 88);
+        List<Integer> lCells = Arrays.asList(107, 108, 98, 88);
         Assert.assertArrayEquals(
                 lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
                 cim.getLShapeHeaders(97).stream().map(Particle::getId).toArray());
+    }
+
+    @Test
+    public void getNeighborCellTest4(){
+        //particle ? -> cell 30 -> neighbor cells [30, 40, 41, 31, 21]
+        List<Integer> lCells = Arrays.asList(40, 41, 31, 21);
+        Assert.assertArrayEquals(
+                lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
+                cim.getLShapeHeaders(30).stream().map(Particle::getId).toArray());
     }
 
     @Test
