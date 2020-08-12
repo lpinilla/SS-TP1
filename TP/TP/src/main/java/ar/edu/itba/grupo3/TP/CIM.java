@@ -168,29 +168,38 @@ public class CIM {
 
     public List<Particle> getLShapeHeaders(int cell) {
         List<Particle> neighborCells = new ArrayList<>();
-        //if periodicEnvironment is set, apply modulus m to all calculations
         neighborCells.add(heads.get(cell));
-        int aux = (periodicEnvironment) ? m : m * m;
+        int aux = (periodicEnvironment)? m : m * m;
+        int periodicMultipler = periodicEnvironment? 1 : 0;
         Particle p;
         //up
-        if (cell + m < m * m) {
+        if (cell + m < m * m || periodicEnvironment) {
             p = heads.get(cell + m % aux);
-            if (p != null) neighborCells.add(heads.get(cell + m % aux));
+            if (p != null) neighborCells.add(p);
         }
         //upper right
-        if (cell + m + 1 < m * m) {
-            p = heads.get(cell + m + 1 % aux);
-            if (p != null) neighborCells.add(heads.get(cell + m + 1 % aux));
+        if (cell + m + 1 < m * m || periodicEnvironment) {
+            //top right
+            if(cell == m * m - 1){
+                p = heads.get(0);
+            }else{
+                p = heads.get(cell + m + 1 % aux + periodicMultipler * m * ((cell+m) / m) );
+            }
+            if (p != null) neighborCells.add(p);
         }
         //right
-        if (cell + 1 < (cell / 10 + 1) * m) {
-            p = heads.get(cell + 1 % aux);
-            if (p != null) neighborCells.add(heads.get(cell + 1 % aux));
+        if (cell + 1 < (cell / 10 + 1) * m || periodicEnvironment) {
+            p = heads.get(cell + 1 % aux + periodicMultipler * m * (cell / m));
+            if (p != null) neighborCells.add(p);
         }
         //bottom right
-        if (cell + 1 - m > 0) {
-            p = heads.get(cell + 1 - m % aux);
-            if (p != null) neighborCells.add(heads.get(cell + 1 - m % aux));
+        if (cell + 1 - m > 0 || periodicEnvironment) {
+            if(cell == m - 1){
+                p = heads.get(m * (m - 1) + 1);
+            }else{
+                p = heads.get(cell + 1 - m % aux + periodicMultipler * m * ((cell - m) / m));
+            }
+            if (p != null) neighborCells.add(p);
         }
         return neighborCells;
     }
