@@ -13,7 +13,7 @@ public class CIMTest {
     @Before
     public void createCIM(){
         //m = 10 -> cell_size = 10
-        cim = new CIM(10, (float) 8, true, false, "resources/Static100.txt");
+        cim = new CIM(10, (float) 8, false, false, "resources/Static100.txt");
         cim.loadDynamicFile("resources/Dynamic100.txt"); //n = 100, l = 100
     }
 
@@ -93,10 +93,8 @@ public class CIMTest {
 
     @Test
     public void getNeighborCellTest5(){
-        List<Integer> lCells = Arrays.asList(19, 29, 30, 10, 0);
-        for(Particle p : cim.getLShapeHeaders(19)){
-            System.out.println(cim.getParticleCurrentCell(p) + " " + p.getId());
-        }
+        cim.setPeriodicEnvironment(true);
+        List<Integer> lCells = Arrays.asList(19, 0, 30, 29, 10);
         Assert.assertArrayEquals(
                 lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
                 cim.getLShapeHeaders(19).stream().map(Particle::getId).toArray());
@@ -104,6 +102,7 @@ public class CIMTest {
 
     @Test
     public void getNeighborCellTest6(){
+        cim.setPeriodicEnvironment(true);
         List<Integer> lCells = Arrays.asList(9, 0, 90, 19, 20);
         Assert.assertArrayEquals(
                 lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),

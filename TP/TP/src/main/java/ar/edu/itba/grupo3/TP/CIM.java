@@ -13,8 +13,12 @@ public class CIM {
     private float rc; //Force radius
     private int m; //number of cells per side
     private final float cellSize;//size of cell
-    private final boolean periodicEnvironment;
+    private boolean periodicEnvironment;
     private final boolean measureRadius;
+
+    public void setPeriodicEnvironment(boolean periodicEnvironment){
+        this.periodicEnvironment = periodicEnvironment;
+    }
 
     public Map<Integer, Particle> getHeads() {
         return heads;
@@ -177,7 +181,7 @@ public class CIM {
         //upper right
         if(cell + m + 1 < m * m) cells.add(cell + m + 1);
         //right
-        if(cell +1 < m) cells.add(cell + 1);
+        if(cell +1 < (((cell +1) / m) * m) + m - 1) cells.add(cell + 1);
         //bottom right
         if(cell - m > 0) cells.add(cell - m + 1);
         //corrections
