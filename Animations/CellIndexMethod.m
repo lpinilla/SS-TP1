@@ -4,10 +4,12 @@ particles = dlmread("../TP/TP/resources/Dynamic100.txt",'', 1, 0);
 cant_particles=length(particles);
 
 #cargo el archivo con todos los neighbours
-neighbours =  dlmread("../TP/TP/resources/AlgunosVecinos_100_rc6.txt",',', 0, 0);
+#neighbours =  dlmread("../TP/TP/resources/AlgunosVecinos_100_rc6.txt",',', 0, 0);
+neighbours =  dlmread("../TP/TP/resources/neighboursOutput.txt",',', 0, 0);
+
 
 #guardo la fila de la particula que quiero ver los neighbours
-interest_particle = neighbours(number,:);
+interest_particle = neighbours(number,:)
 cant_neigh=length(interest_particle);
 
 #dibujo todas las particulas
@@ -18,8 +20,8 @@ hold on
 
 #dibujo la paticula en cuestion
 m=interest_particle(1,1)
-x1=particles(m,1)
-y1=particles(m,2)
+x1=particles(m+1,1)
+y1=particles(m+1,2)
 plot(x1,y1,'r*')
 hold on
 
@@ -27,8 +29,8 @@ hold on
 for i = 2:cant_neigh
    n=interest_particle(1,i)
    if n!=0
-   x2=particles(n,1)
-   y2=particles(n,2)
+   x2=particles(n+1,1)
+   y2=particles(n+1,2)
    plot(x2,y2,'g*')
    hold on
    endif

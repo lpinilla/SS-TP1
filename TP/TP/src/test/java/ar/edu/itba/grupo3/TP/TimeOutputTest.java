@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.sql.Time;
+import java.util.Scanner;
 
 public class TimeOutputTest {
     TimeOutput t;
@@ -25,4 +26,5 @@ public class TimeOutputTest {
 
 
     }
-}
+
+  }
