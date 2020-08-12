@@ -166,40 +166,42 @@ public class CIM {
         }
     }
 
-    public List<Particle> getLShapeHeaders(int cell) {
+    public List<Particle> getLShapeHeaders(int cell){
         List<Particle> neighborCells = new ArrayList<>();
         neighborCells.add(heads.get(cell));
-        int aux = (periodicEnvironment)? m : m * m;
-        int periodicMultipler = periodicEnvironment? 1 : 0;
         Particle p;
+        List<Integer> cells = new ArrayList<>(); // 0: up, 1: up-right, 2: right, 3:bottom right
+        for(int i = 0; i < 4; i++) cells.add(null);
         //up
-        if (cell + m < m * m || periodicEnvironment) {
-            p = heads.get(cell + m % aux);
-            if (p != null) neighborCells.add(p);
-        }
+        if(cell + m < m * m) cells.add(cell + m);
         //upper right
-        if (cell + m + 1 < m * m || periodicEnvironment) {
-            //top right
-            if(cell == m * m - 1){
-                p = heads.get(0);
-            }else{
-                p = heads.get(cell + m + 1 % aux + periodicMultipler * m * ((cell+m) / m) );
-            }
-            if (p != null) neighborCells.add(p);
-        }
+        if(cell + m + 1 < m * m) cells.add(cell + m + 1);
         //right
-        if (cell + 1 < (cell / 10 + 1) * m || periodicEnvironment) {
-            p = heads.get(cell + 1 % aux + periodicMultipler * m * (cell / m));
-            if (p != null) neighborCells.add(p);
-        }
+        if(cell +1 < m) cells.add(cell + 1);
         //bottom right
-        if (cell + 1 - m > 0 || periodicEnvironment) {
-            if(cell == m - 1){
-                p = heads.get(m * (m - 1) + 1);
-            }else{
-                p = heads.get(cell + 1 - m % aux + periodicMultipler * m * ((cell - m) / m));
+        if(cell - m > 0) cells.add(cell - m + 1);
+        //corrections
+        if(periodicEnvironment){
+            //last row
+            if(cell >= m * m - m){
+                cells.add(0, cell % m);
+                cells.add(1, ((cell + m + 1) / m) * m );
             }
-            if (p != null) neighborCells.add(p);
+            //last column
+            if(cell % m == m -1){
+                cells.add(1, cell + 1);
+                cells.add(2, cell / m * m);
+                cells.add(3, (cell / m * m) - m );
+            }
+            //first row
+            if(cell <= m){
+                cells.add(3, cell+1 + m * m - 2 * m);
+            }
+        }
+        for(Integer i : cells){
+            if(i == null) continue;
+            p = heads.get(i);
+            if(p != null) neighborCells.add(p);
         }
         return neighborCells;
     }

@@ -2,10 +2,8 @@ package ar.edu.itba.grupo3.TP;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.*;
 
 public class CIMTest {
@@ -15,7 +13,7 @@ public class CIMTest {
     @Before
     public void createCIM(){
         //m = 10 -> cell_size = 10
-        cim = new CIM(10, (float) 8, false, false, "resources/Static100.txt");
+        cim = new CIM(10, (float) 8, true, false, "resources/Static100.txt");
         cim.loadDynamicFile("resources/Dynamic100.txt"); //n = 100, l = 100
     }
 
@@ -91,6 +89,25 @@ public class CIMTest {
         Assert.assertArrayEquals(
                 lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
                 cim.getLShapeHeaders(30).stream().map(Particle::getId).toArray());
+    }
+
+    @Test
+    public void getNeighborCellTest5(){
+        List<Integer> lCells = Arrays.asList(19, 29, 30, 10, 0);
+        for(Particle p : cim.getLShapeHeaders(19)){
+            System.out.println(cim.getParticleCurrentCell(p) + " " + p.getId());
+        }
+        Assert.assertArrayEquals(
+                lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
+                cim.getLShapeHeaders(19).stream().map(Particle::getId).toArray());
+    }
+
+    @Test
+    public void getNeighborCellTest6(){
+        List<Integer> lCells = Arrays.asList(9, 0, 90, 19, 20);
+        Assert.assertArrayEquals(
+                lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
+                cim.getLShapeHeaders(9).stream().map(Particle::getId).toArray());
     }
 
 
