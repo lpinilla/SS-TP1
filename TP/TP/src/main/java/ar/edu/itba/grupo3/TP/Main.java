@@ -1,65 +1,37 @@
 package ar.edu.itba.grupo3.TP;
 
-//para ubicar las particulas hacemos
-//(x/m)+(m*y/m)
-
-// i-m
-// i-m+1
-// i+1
-// i+1+m
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.InputMismatchException;
-import java.util.Random;
 import java.util.Scanner;
 
+//  ________________________________________
+//< Don't mind me, just a good luck totem   >
+//  ----------------------------------------
+//      \
+//       \
+//         .--.
+//        |o_o |
+//        |:_/ |
+//       //   \ \
+//      (|     | )
+//     /'\_   _/`\
+//     \___)=(___/
+//
+
+
+
 public class Main {
-    public static void main(String[] args) throws IOException {
 
-//       GenerateInput.inputGenerator();
-        int N=100; //cantidad de particulas
-        int L = 100; //largo
-        int M=10; //cuadrados
-        double rc=6; //radio de interaccion
-        double r=1; //radio de particulas
-        boolean periodic=false; //condicion periodica de contorno
-        boolean defaultV=true; //usar condiciones default
-        //reading from user input
-        Scanner reader = new Scanner(System.in);  // Reading from System.in
-        System.out.println("Formato Default? (y/n)");
-
-        try {
-            if(reader.next().charAt(0)=='n') {
-                defaultV=false;
-                System.out.println("Ingrese N, cantidad de particulas ");
-                N = reader.nextInt();
-                System.out.println("Ingrese L, largo del tablero");
-                L = reader.nextInt();
-                System.out.println("Ingrese M, cuadrados por lado");
-                M = reader.nextInt();
-                System.out.println("Ingrese rc, radio de interaccion");
-                rc = reader.nextDouble();
-                System.out.println("Ingrese r, radio de particulas");
-                r = reader.nextDouble();
-                System.out.println("Condicion periodica de contorno? (y/n)");
-                periodic = reader.next().charAt(0) == 'y';
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("Parametro invalido");
-        }
-        reader.close();
-        System.out.println("Parametros ingresados:" + N + L + M + rc + r + periodic);
+    public static void main(String[] args) {
+        ProgramInput input = readInput();
         //creating CIM
-        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("prueba.txt")));
-
         CIM cim;
         //cim=new CIM(N,L,(float)rc,M,periodic,false);
         //cim = new CIM(10, (float) 6.0, false, false, "/home/mimi/Documents/SS/TP/SS-TP1/TP/TP/resources/Static100.txt");
-
-       // cim.loadStaticFile("resources/Static100.txt");
+        //cim.loadStaticFile("resources/Static100.txt");
         //cim.loadDynamicFile("/home/mimi/Documents/SS/TP/SS-TP1/TP/TP/resources/Dynamic100.txt"); //n = 100, l = 100
 
         //time
@@ -79,7 +51,7 @@ public class Main {
                     cim = new CIM(i, (float) 6.0, false, false, "/home/mimi/Documents/SS/TP/SS-TP1/TP/TP/resources/Static100.txt");
                     cim.loadDynamicFile("/home/mimi/Documents/SS/TP/SS-TP1/TP/TP/resources/Dynamic100.txt");
                     cim.calculateNeighbors();
-                    NeighboursOutput.neighboursGenerator(cim);
+                    cim.saveNeighborsToFile("/home/mimi/Documents/SS/TP/SS-TP1/TP/TP/resources/neighboursOutput.txt");
                     long endTime = System.currentTimeMillis();
                     long duration = (endTime - startTime);
                     tsum += duration;
@@ -89,17 +61,65 @@ public class Main {
                     if (duration < tmin) {
                         tmin = duration;
                     }
+                    cim.saveTimeToFile("Times/", k, i, tsum / cantT, tmin, tmax);
                 }
-                TimeOutput.outputGenerator(k, i, tsum / cantT, tmin, tmax);
+                //cim.saveTimeToFile("Times/", k, i, tsum / cantT, tmin, tmax);
                 tsum = 0;
                 tmax = 0;
                 tmin = Double.MAX_VALUE;
             }
         }
+    }
 
 
+    private static ProgramInput readInput(){
+        //reading from user input
+        Scanner reader = new Scanner(System.in);  // Reading from System.in
+        ProgramInput input = new ProgramInput(); //cargando valores default
+        System.out.println("Formato Default? (y/n)"); //se toma en cuenta que solo se ingresa y o n
+        try {
+            if(reader.next().charAt(0)=='n') {
+                System.out.println("Ingrese N, cantidad de particulas ");
+                input.N = reader.nextInt();
+                System.out.println("Ingrese L, largo del tablero");
+                input.L = reader.nextInt();
+                System.out.println("Ingrese M, cuadrados por lado");
+                input.M = reader.nextInt();
+                System.out.println("Ingrese rc, radio de interaccion");
+                input.rc = reader.nextDouble();
+                System.out.println("Ingrese r, radio de particulas");
+                input.r = reader.nextDouble();
+                System.out.println("Condicion periodica de contorno? (y/n)");
+                input.periodic = reader.next().charAt(0) == 'y';
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Parametro invalido");
+        }
+        reader.close();
+        System.out.println("Parametros ingresados:" + input);
+        return input;
+    }
 
+    private static class ProgramInput{
+        int N; //cantidad de particulas
+        int L; //largo
+        int M; //cuadrados
+        double rc; //radio de interaccion
+        double r; //radio de particulas
+        boolean periodic; //condicion periodica de contorno
 
+        ProgramInput(){
+            this.N = 100;
+            this.L = 100;
+            this.M = 10;
+            this.rc = 6;
+            this.r = 1;
+            this.periodic = false;
+        }
+
+        public String toString(){
+            return N + " " + L + " " + M + " " + rc + " " + r + " " +  periodic + " ";
+        }
     }
 }
 
