@@ -94,7 +94,7 @@ public class CIMTest {
     @Test
     public void getNeighborCellTest5(){
         cim.setPeriodicEnvironment(true);
-        List<Integer> lCells = Arrays.asList(19, 0, 30, 29, 10);
+        List<Integer> lCells = Arrays.asList(19, 0, 20, 29, 10);
         Assert.assertArrayEquals(
                 lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
                 cim.getLShapeHeaders(19).stream().map(Particle::getId).toArray());
@@ -103,12 +103,29 @@ public class CIMTest {
     @Test
     public void getNeighborCellTest6(){
         cim.setPeriodicEnvironment(true);
-        List<Integer> lCells = Arrays.asList(9, 0, 90, 19, 20);
+        List<Integer> lCells = Arrays.asList(9, 19, 10, 0, 90);
         Assert.assertArrayEquals(
                 lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
                 cim.getLShapeHeaders(9).stream().map(Particle::getId).toArray());
     }
 
+    @Test
+    public void getNeighborCellTest7(){
+        cim.setPeriodicEnvironment(true);
+        List<Integer> lCells = Arrays.asList(69, 79, 70, 60, 50);
+        Assert.assertArrayEquals(
+                lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
+                cim.getLShapeHeaders(69).stream().map(Particle::getId).toArray());
+    }
+
+    @Test
+    public void getNeighborCellTest8(){
+        cim.setPeriodicEnvironment(true);
+        List<Integer> lCells = Arrays.asList(95, 5, 6, 96, 86);
+        Assert.assertArrayEquals(
+                lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
+                cim.getLShapeHeaders(95).stream().map(Particle::getId).toArray());
+    }
 
     @Test
     public void calculateNeighborsTest(){

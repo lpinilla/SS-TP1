@@ -174,32 +174,31 @@ public class CIM {
         List<Particle> neighborCells = new ArrayList<>();
         neighborCells.add(heads.get(cell));
         Particle p;
-        List<Integer> cells = new ArrayList<>(); // 0: up, 1: up-right, 2: right, 3:bottom right
-        for(int i = 0; i < 4; i++) cells.add(null);
+        Integer[] cells = new Integer[4]; // 0: up, 1: up-right, 2: right, 3:bottom right
         //up
-        if(cell + m < m * m) cells.add(cell + m);
+        if(cell + m < m * m) cells[0] = (cell + m);
         //upper right
-        if(cell + m + 1 < m * m) cells.add(cell + m + 1);
+        if(cell + m + 1 < m * m) cells[1] = (cell + m + 1);
         //right
-        if(cell +1 < (((cell +1) / m) * m) + m - 1) cells.add(cell + 1);
+        if(cell +1 < (((cell +1) / m) * m) + m - 1) cells[2] = (cell + 1);
         //bottom right
-        if(cell - m > 0) cells.add(cell - m + 1);
+        if(cell - m +1 > 0) cells[3] = (cell - m + 1);
         //corrections
         if(periodicEnvironment){
             //last row
             if(cell >= m * m - m){
-                cells.add(0, cell % m);
-                cells.add(1, ((cell + m + 1) / m) * m );
+                cells[0] = ( cell % m);
+                cells[1] = (cell + 1) % m;
             }
             //last column
             if(cell % m == m -1){
-                cells.add(1, cell + 1);
-                cells.add(2, cell / m * m);
-                cells.add(3, (cell / m * m) - m );
+                cells[1] = (cell + 1);
+                cells[2] = cell / m * m;
+                cells[3] = (cell / m * m) - m ;
             }
             //first row
             if(cell <= m){
-                cells.add(3, cell+1 + m * m - 2 * m);
+                cells[3] = cell+1 + m * m - 2 * m;
             }
         }
         for(Integer i : cells){
