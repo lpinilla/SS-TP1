@@ -1,6 +1,6 @@
 function TimeOutputPlot
   #cargo el archivo
-  times = dlmread("../TP/TP/resources/TimeOutput2.txt",'', 1, 0);
+  times = dlmread("../TimeOutput250.txt",'', 1, 0);
   x=times(:,1);
   y=times(:,2);
   neg=times(:,3);
@@ -9,7 +9,7 @@ function TimeOutputPlot
 
   
   #cargo otro archivo
-  times2 = dlmread("../TP/TP/resources/TimeOutput4.txt",'', 1, 0);
+  times2 = dlmread("../TimeOutput1000.txt",'', 1, 0);
   x2=times2(:,1);
   y2=times2(:,2);
   neg2=times2(:,3);
@@ -17,10 +17,10 @@ function TimeOutputPlot
   
   errorbar(x,y,neg,pos,'r')
   hold on
-  errorbar(x2,y2,neg2,pos2)
+  #errorbar(x2,y2,neg2,pos2)
   
   title("M vs Time")
-  legend('N=2','N=4')
+  legend('N=250','N=500')
 
   
   

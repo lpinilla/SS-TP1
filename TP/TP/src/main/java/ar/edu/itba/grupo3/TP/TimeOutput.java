@@ -14,7 +14,7 @@ public class TimeOutput {
 
     private static void generateTimeOutput(int N, int M,double tprom,double tmin,double tmax) throws IOException {
         try {
-            File f=new File("resources/TimeOutput"+N+".txt");
+            File f=new File("TimeOutput"+N+".txt");
             if(!f.exists()){
                 BufferedWriter writer = new BufferedWriter(new FileWriter(f));
                 writer.write(Integer.toString(N));

@@ -15,7 +15,7 @@ public class NeighboursOutput {
     private static void generateNeighbours(CIM cim) {
         List<Particle> all=cim.getAllParticles();
         try{
-            BufferedWriter writer = new BufferedWriter(new FileWriter(new File("resources/neighboursOutput.txt")));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File("/home/mimi/Documents/SS/TP/SS-TP1/TP/TP/resources/neighboursOutput.txt")));
             for(int i=0;i<cim.getN();i++){
                 writer.write(Integer.toString(i)+",");
                 StringBuilder builder = new StringBuilder();
@@ -31,7 +31,7 @@ public class NeighboursOutput {
             writer.flush();
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 

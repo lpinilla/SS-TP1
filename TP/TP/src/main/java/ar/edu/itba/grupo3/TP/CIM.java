@@ -104,6 +104,8 @@ public class CIM {
                                 index));
                 index++;
             }
+            br.close();
+
         }catch(IOException e){
             System.out.println(e.getMessage());
         }
@@ -127,6 +129,7 @@ public class CIM {
                 putInCell(aux);
                 index++;
             }
+            br.close();
         }catch(IOException e){
             System.out.println(e.getMessage());
         }
