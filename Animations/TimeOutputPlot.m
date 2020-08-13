@@ -70,7 +70,7 @@ function TimeOutputPlot(N)
    str4 = strcat('N = ', num2str(N+300));
    str5 = strcat('N = ', num2str(N+400));
 
-  title("M vs Time para distintos N")
+  title("M vs Tiempo para distintos N")
   legend(str1,str2,str3,str4,str5)
   xlabel('M')
   ylabel('Tiempo [segundos]')

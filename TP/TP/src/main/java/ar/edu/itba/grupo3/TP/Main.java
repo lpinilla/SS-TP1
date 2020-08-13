@@ -1,5 +1,8 @@
 package ar.edu.itba.grupo3.TP;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.InputMismatchException;
@@ -30,13 +33,12 @@ public class Main {
             //si no era default,creo archivos static y dynamic random
             if (!input.def) {
                 if (input.timeAnalyzer) {
-
                     timeAnalyzer(input);
 
                 } else {
                     createRandomInputs(input);
-                    input.pathDynamic = "/home/mimi/Documents/SS/TP/SS-TP1/TP/TP/resources/RandomDynamicInput.txt";
-                    input.pathStatic = "/home/mimi/Documents/SS/TP/SS-TP1/TP/TP/resources/RandomStaticInput.txt";
+                    input.pathDynamic = "TP/TP/resources/RandomStaticInput.txt";
+                    input.pathStatic = "TP/TP/resources/RandomStaticInput.txt";
                     neighbourAnalizer(input);
                 }
             } else {
@@ -69,8 +71,8 @@ public class Main {
 
                 for (int j = 0; j < cantT; j++) {
                     createRandomInputs(input);
-                    input.pathDynamic = "/home/mimi/Documents/SS/TP/SS-TP1/TP/TP/resources/RandomDynamicInput.txt";
-                    input.pathStatic = "/home/mimi/Documents/SS/TP/SS-TP1/TP/TP/resources/RandomStaticInput.txt";
+                    input.pathDynamic = "TP/TP/resources/RandomDynamicInput.txt";
+                    input.pathStatic = "TP/TP/resources/RandomStaticInput.txt";
                     cim = neighbourAnalizer(input);
                     times[j] = cim.getDuration();
                 }
@@ -92,7 +94,7 @@ public class Main {
         long endTime = System.nanoTime();
         long duration = endTime - startTime;
         cim.setDuration(duration);
-        cim.saveNeighborsToFile("/home/mimi/Documents/SS/TP/SS-TP1/TP/TP/resources/neighboursOutput.txt");
+        cim.saveNeighborsToFile("TP/TP/resources/neighboursOutput.txt");
         return cim;
     }
 
@@ -150,13 +152,13 @@ public class Main {
             this.periodic = true;
             this.def = true;
             this.timeAnalyzer = false;
-            this.pathStatic = "/home/mimi/Documents/SS/TP/SS-TP1/TP/TP/resources/Static100.txt";
-            this.pathDynamic = "/home/mimi/Documents/SS/TP/SS-TP1/TP/TP/resources/Dynamic100.txt";
+            this.pathStatic = "TP/TP/resources/Static100.txt";
+            this.pathDynamic = "TP/TP/resources/Dynamic100.txt";
 
         }
 
         public String toString() {
-            return N + " " + L + " " + M + " " + rc + " " + r + " " + periodic + " ";
+            return N + " " + L + " " + M + " " + rc + " " + periodic + " ";
         }
     }
 }

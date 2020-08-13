@@ -133,7 +133,7 @@ public class CIM {
             //particles
             int index = 0;
             while ((s = br.readLine()) != null) {
-                String[] rad_prop = s.split(" {4}");
+                String[] rad_prop = s.split(" {3}");
                 this.allParticles.add(
                         new Particle(
                                 Double.parseDouble(rad_prop[0]),
@@ -159,7 +159,7 @@ public class CIM {
             int index = 0;
             Particle aux;
             while ((s = br.readLine()) != null) {
-                String[] position = s.split(" {4}");
+                String[] position = s.split(" {3}");
                 aux = this.allParticles.get(index);
                 aux.setX(Double.parseDouble(position[0]));
                 aux.setY(Double.parseDouble(position[1]));
