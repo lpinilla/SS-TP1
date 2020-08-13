@@ -263,9 +263,10 @@ public class CIM {
         double dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY) -
                 ((p2.getRadious() + p1.getRadious()) * measureRadiusYesNo);
         //check if distance is withing rc
+        Particle aux = allParticles.get(p2.getId());
         if (dist < getRc()) {
-            p1.getNeighbours().add(p2);
-            p2.getNeighbours().add(p1);
+            p1.getNeighbours().add(aux);
+            aux.getNeighbours().add(p1);
         }
     }
 
