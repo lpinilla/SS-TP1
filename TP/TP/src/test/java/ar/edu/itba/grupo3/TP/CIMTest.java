@@ -128,6 +128,15 @@ public class CIMTest {
     }
 
     @Test
+    public void getNeighborCellTest9(){
+        cim.setPeriodicEnvironment(true);
+        List<Integer> lCells = Arrays.asList(90, 0, 1, 91, 81);
+        Assert.assertArrayEquals(
+                lCells.stream().map(i -> cim.getHeads().get(i)).filter(Objects::nonNull).map(Particle::getId).toArray(),
+                cim.getLShapeHeaders(90).stream().map(Particle::getId).toArray());
+    }
+
+    @Test
     public void calculateNeighborsTest(){
         cim.calculateNeighbors();
         List<Integer> expected = Arrays.asList(37, 57);
@@ -140,6 +149,17 @@ public class CIMTest {
     public void calculateNeighborsTest2(){
         cim.calculateNeighbors();
         List<Integer> expected = Arrays.asList(21, 40, 83);
+        Assert.assertArrayEquals(
+                expected.toArray(),
+                cim.getAllParticles().get(90).getNeighbours().stream().map(Particle::getId).toArray());
+    }
+
+    @Test
+    public void calculateNeighborsTest3(){
+        cim.setPeriodicEnvironment(true);
+        cim.calculateNeighbors();
+        List<Integer> expected = Arrays.asList(21, 40, 83);
+        System.out.println(Arrays.toString(cim.getAllParticles().get(2).getNeighbours().stream().map(Particle::getId).toArray()));
         Assert.assertArrayEquals(
                 expected.toArray(),
                 cim.getAllParticles().get(90).getNeighbours().stream().map(Particle::getId).toArray());

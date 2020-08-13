@@ -170,43 +170,59 @@ public class CIM {
         }
     }
 
+    public Particle moveCell(Particle cell, double xDispl, double yDispl){
+        if(cell == null) return null;
+        Particle ret = new Particle(cell.getX(), cell.getY(), cell.getRadious(), cell.getProperty());
+        ret.setId(cell.getId());
+        Particle aux;
+        for(Particle p : cell.getParticlesFromCell()){
+            aux = cloneParticle(p);
+            //agregar desplazamiento
+            aux.setX(aux.getX() + xDispl);
+            aux.setY(aux.getY() + yDispl);
+            ret.getParticlesFromCell().add(aux);
+        }
+        return ret;
+    }
+
+    private Particle cloneParticle(Particle p){
+        Particle ret = new Particle(p.getX(), p.getY(), p.getProperty(), p.getRadious());
+        ret.setId(p.getId());
+        return ret;
+    }
+
+
     public List<Particle> getLShapeHeaders(int cell){
-        List<Particle> neighborCells = new ArrayList<>();
-        neighborCells.add(heads.get(cell));
+        Particle[] neighborCells = new Particle[5];
+        neighborCells[0] = heads.get(cell);
         Particle p;
-        Integer[] cells = new Integer[4]; // 0: up, 1: up-right, 2: right, 3:bottom right
         //up
-        if(cell + m < m * m) cells[0] = (cell + m);
+        if(cell + m < m * m) neighborCells[1] = heads.get(cell + m);
         //upper right
-        if(cell + m + 1 < m * m) cells[1] = (cell + m + 1);
+        if(cell + m + 1 < m * m) neighborCells[2] = heads.get(cell + m + 1);
         //right
-        if(cell +1 < (((cell +1) / m) * m) + m - 1) cells[2] = (cell + 1);
+        if(cell +1 < (((cell +1) / m) * m) + m - 1) neighborCells[3] = heads.get(cell + 1);
         //bottom right
-        if(cell - m +1 > 0) cells[3] = (cell - m + 1);
+        if(cell - m +1 > 0) neighborCells[4] = heads.get(cell - m + 1);
         //corrections
         if(periodicEnvironment){
             //last row
             if(cell >= m * m - m){
-                cells[0] = ( cell % m);
-                cells[1] = (cell + 1) % m;
+                neighborCells[1] = moveCell(heads.get( cell % m), 0.0, (double) m * m - m); //up
+                neighborCells[2] = moveCell(heads.get((cell + 1) % m),0,(double) m * m - m); //upper right
             }
             //last column
             if(cell % m == m -1){
-                cells[1] = (cell + 1);
-                cells[2] = cell / m * m;
-                cells[3] = (cell / m * m) - m ;
+                neighborCells[2] = moveCell(heads.get(cell + 1), 0, m * m - m); //upper right
+                neighborCells[3] = moveCell(heads.get(cell / m * m), m * m - m, 0); //right
+                neighborCells[4] = moveCell(heads.get((cell / m * m) - m), m * m - m, 0); //bottom right
             }
             //first row
             if(cell <= m){
-                cells[3] = cell+1 + m * m - 2 * m;
+                neighborCells[4] = moveCell(heads.get(cell+1 + m * m - 2 * m), m * m - m, 0);
             }
         }
-        for(Integer i : cells){
-            if(i == null) continue;
-            p = heads.get(i);
-            if(p != null) neighborCells.add(p);
-        }
-        return neighborCells;
+        return Arrays.stream(neighborCells).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     public int getParticleCurrentCell(Particle p) {
@@ -233,8 +249,8 @@ public class CIM {
 
     public void addIfInRange(Particle p1, Particle p2, double measureRadiusYesNo) {
         if (p1.equals(p2)) return;
-        double deltaX = p2.getX() - p1.getX();
-        double deltaY = p2.getY() - p1.getY();
+        double deltaX = Math.abs(p2.getX() - p1.getX());
+        double deltaY = Math.abs(p2.getY() - p1.getY());
         double dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY) -
                 ((p2.getRadious() + p1.getRadious()) * measureRadiusYesNo);
         //check if distance is withing rc
