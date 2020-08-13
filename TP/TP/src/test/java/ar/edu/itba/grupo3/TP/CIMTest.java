@@ -160,7 +160,7 @@ public class CIMTest {
         cim.setPeriodicEnvironment(true);
         cim.calculateNeighbors();
         Assert.assertEquals(6,
-                cim.getAllParticles().get(1).getNeighbours().size());
+                cim.getAllParticles().get(3).getNeighbours().size());
     }
 
     @Test

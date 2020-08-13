@@ -224,7 +224,7 @@ public class CIM {
             }
             //top right corner
             if(cell == m * m -1){
-                neighborCells[2] = moveCell(heads.get(cell + 1), m * m, m * m); //upper right
+                neighborCells[2] = moveCell(heads.get(0), m * m, m * m); //upper right
             }
             //bottom right corner
             if(cell == m - 1){
