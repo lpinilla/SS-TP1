@@ -1,27 +1,83 @@
-function TimeOutputPlot
+function TimeOutputPlot(N)
   #cargo el archivo
-  times = dlmread("../TimeOutput250.txt",'', 1, 0);
-  x=times(:,1);
-  y=times(:,2);
-  neg=times(:,3);
-  pos=times(:,4);
-  
+  times1 = dlmread("../TimeOutput1.txt",'', 1, 0);
+  times2 = dlmread("../TimeOutput2.txt",'', 1, 0);
+  times3 = dlmread("../TimeOutput3.txt",'', 1, 0);
+  times4 = dlmread("../TimeOutput4.txt",'', 1, 0);
+  times5=dlmread("../TimeOutput5.txt",'', 1, 0);
 
+
+  #longitud de las filas
+  fil=times1(1,:);
+  sizeF=length(fil)-1;
   
-  #cargo otro archivo
-  times2 = dlmread("../TimeOutput1000.txt",'', 1, 0);
-  x2=times2(:,1);
-  y2=times2(:,2);
-  neg2=times2(:,3);
-  pos2=times2(:,4);
+  #longitud de las columnas
+  col=times1(:,1);
+  sizeC=length(col);
   
-  errorbar(x,y,neg,pos,'r')
+  #agarro las M, eje x
+  x=times1(:,1);
+  
+  #analizo 1
+  for i=1:sizeC
+  aux=times1(i,2:sizeF)/1000000000;
+  y(i)=mean(aux);
+  s(i)=std(aux);
+  end
+  errorbar(x,y,s,'r')
   hold on
-  #errorbar(x2,y2,neg2,pos2)
   
-  title("M vs Time")
-  legend('N=250','N=500')
+  #analizo 2
+  for i=1:sizeC
+  aux=times2(i,2:sizeF)/1000000000;
+  y(i)=mean(aux);
+  s(i)=std(aux);
+  end
+  errorbar(x,y,s,'g')
+  hold on
+  
+  #analizo 3
+  for i=1:sizeC
+  aux=times3(i,2:sizeF)/1000000000;
+  y(i)=mean(aux);
+  s(i)=std(aux);
+  end
+  errorbar(x,y,s,'b')
+  hold on
+  
+  #analizo 4
+  for i=1:sizeC
+  aux=times4(i,2:sizeF)/1000000000;
+  y(i)=mean(aux);
+  s(i)=std(aux);
+  end
+  errorbar(x,y,s,'m')
+  hold on
+  
+   #analizo 5
+  for i=1:sizeC
+  aux=times5(i,2:sizeF)/1000000000;
+  y(i)=mean(aux);
+  s(i)=std(aux);
+  end
+  errorbar(x,y,s,'k')
+  hold on
+  
+  #para graficos
+   str1 = strcat('N = ', num2str(N));
+   str2 = strcat('N = ', num2str(N+100));
+   str3 = strcat('N = ', num2str(N+200));
+   str4 = strcat('N = ', num2str(N+300));
+   str5 = strcat('N = ', num2str(N+400));
 
+  title("M vs Time para distintos N")
+  legend(str1,str2,str3,str4,str5)
+  xlabel('M')
+  ylabel('Tiempo [segundos]')
+  
+  print graficoTiempo.pdf
+  open graficoTiempo.pdf
+ 
   
   
   
