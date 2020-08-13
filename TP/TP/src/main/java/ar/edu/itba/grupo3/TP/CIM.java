@@ -172,10 +172,11 @@ public class CIM {
 
     public Particle moveCell(Particle cell, double xDispl, double yDispl){
         if(cell == null) return null;
-        Particle ret = new Particle(cell.getX(), cell.getY(), cell.getRadious(), cell.getProperty());
+        Particle ret = new Particle(cell.getX() + xDispl, cell.getY() + yDispl, cell.getRadious(), cell.getProperty());
         ret.setId(cell.getId());
         Particle aux;
         for(Particle p : cell.getParticlesFromCell()){
+            if(p.equals(ret)) continue;
             aux = cloneParticle(p);
             //agregar desplazamiento
             aux.setX(aux.getX() + xDispl);
@@ -197,13 +198,13 @@ public class CIM {
         neighborCells[0] = heads.get(cell);
         Particle p;
         //up
-        if(cell + m < m * m) neighborCells[1] = heads.get(cell + m);
+        if((cell + m) < m * m) neighborCells[1] = heads.get(cell + m);
         //upper right
-        if(cell + m + 1 < m * m) neighborCells[2] = heads.get(cell + m + 1);
+        if((cell + m + 1) < m * m) neighborCells[2] = heads.get(cell + m + 1);
         //right
-        if(cell +1 < (((cell +1) / m) * m) + m - 1) neighborCells[3] = heads.get(cell + 1);
+        if((cell +1) < (((cell +1) / m) * m) + m - 1) neighborCells[3] = heads.get(cell + 1);
         //bottom right
-        if(cell - m +1 > 0) neighborCells[4] = heads.get(cell - m + 1);
+        if((cell - m +1) > 0) neighborCells[4] = heads.get(cell - m + 1);
         //corrections
         if(periodicEnvironment){
             //last row
