@@ -208,18 +208,26 @@ public class CIM {
         if(periodicEnvironment){
             //last row
             if(cell >= m * m - m){
-                neighborCells[1] = moveCell(heads.get( cell % m), 0.0, (double) m * m - m); //up
-                neighborCells[2] = moveCell(heads.get((cell + 1) % m),0,(double) m * m - m); //upper right
+                neighborCells[1] = moveCell(heads.get( cell % m), 0.0,  m * m); //up
+                neighborCells[2] = moveCell(heads.get((cell + 1) % m),0, m * m); //upper right
             }
             //last column
             if(cell % m == m -1){
-                neighborCells[2] = moveCell(heads.get(cell + 1), 0, m * m - m); //upper right
-                neighborCells[3] = moveCell(heads.get(cell / m * m), m * m - m, 0); //right
-                neighborCells[4] = moveCell(heads.get((cell / m * m) - m), m * m - m, 0); //bottom right
+                neighborCells[2] = moveCell(heads.get(cell + 1), m * m, 0); //upper right
+                neighborCells[3] = moveCell(heads.get(cell / m * m), m * m, 0); //right
+                neighborCells[4] = moveCell(heads.get((cell / m * m) - m), m * m, 0); //bottom right
             }
             //first row
-            if(cell <= m){
-                neighborCells[4] = moveCell(heads.get(cell+1 + m * m - 2 * m), m * m - m, 0);
+            if(cell < m){
+                neighborCells[4] = moveCell(heads.get(cell+1 + m * m - 2 * m), 0, - m * m);
+            }
+            //top right corner
+            if(cell == m * m -1){
+                neighborCells[2] = moveCell(heads.get(cell + 1), m * m, m * m); //upper right
+            }
+            //bottom right corner
+            if(cell == m - 1){
+                neighborCells[4] = moveCell(heads.get(cell+1 + m * m - 2 * m), - m * m ,  - m * m);
             }
         }
         return Arrays.stream(neighborCells).filter(Objects::nonNull).collect(Collectors.toList());
