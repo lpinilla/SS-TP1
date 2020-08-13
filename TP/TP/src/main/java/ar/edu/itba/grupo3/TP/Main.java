@@ -101,7 +101,7 @@ public class Main {
         //reading from user input
         Scanner reader = new Scanner(System.in);  // Reading from System.in
         ProgramInput input = new ProgramInput(); //cargando valores default
-        System.out.println("Formato Default? N=100, L=100, M=10, Rc=6, R=1, Infinite=true (y/n)"); //se toma en cuenta que solo se ingresa y o n
+        System.out.println("Formato Default? N=100, L=100, M=10, Rc=6, Infinite=true (y/n)"); //se toma en cuenta que solo se ingresa y o n
         try {
             if (reader.next().charAt(0) == 'n') {
                 input.def = false;
@@ -113,8 +113,7 @@ public class Main {
                 input.M = reader.nextInt();
                 System.out.println("Ingrese rc, radio de interaccion");
                 input.rc = reader.nextDouble();
-                System.out.println("Ingrese r, radio de particulas");
-                input.r = reader.nextDouble();
+
                 System.out.println("Condicion periodica de contorno? (y/n)");
                 input.periodic = reader.next().charAt(0) == 'y';
                 System.out.println("Analizar tiempo? (y/n)");
