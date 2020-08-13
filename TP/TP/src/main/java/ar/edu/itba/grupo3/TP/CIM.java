@@ -15,6 +15,7 @@ public class CIM {
     private final float cellSize;//size of cell
     private boolean periodicEnvironment;
     private final boolean measureRadius;
+    private long duration;
 
     public void setPeriodicEnvironment(boolean periodicEnvironment){
         this.periodicEnvironment = periodicEnvironment;
@@ -87,6 +88,17 @@ public class CIM {
         this.cellSize = l / m;
         this.periodicEnvironment = periodicEnvironment;
         this.measureRadius = measureRadius;
+        this.duration=0;
+    }
+
+
+    public long getDuration() {
+        return duration;
+    }
+
+
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 
     public CIM(int m, float rc, boolean periodicEnvironment, boolean measureRadius, String path) throws IllegalArgumentException {
@@ -110,7 +122,7 @@ public class CIM {
         if ((l / m) <= rc) throw new IllegalArgumentException("No se cumple la condición 'l / m > rc'");
     }
 
-    public void loadStaticFile(String path) {
+    public void loadStaticFile(String path)  {
         if (path.isEmpty()) return;
         File file = new File(path);
         try {
@@ -293,29 +305,26 @@ public class CIM {
     }
 
 
-    public void saveTimeToFile(String dirPath, int N, int M, double tprom, double tmin, double tmax) {
+    public void saveTimeToFile(String dirPath, int N, int M, long[] times, int q) {
         try {
-            File f = new File(dirPath + "TimeOutput" + N + ".txt");
-            double aux1 = tprom - tmin;
-            double aux2 = tmax - tprom;
+            File f = new File(dirPath + "TimeOutput" + q + ".txt");
             if (!f.exists()) {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(f));
                 writer.write(Integer.toString(N));
                 writer.newLine();
-                writer.write(M + " " + tprom + " " + aux1 + " " + aux2);
-                //necesito todos los tiempos?
-//                for (int i = 0; i < time.length; i++) {
-//                    writer.write(Double.toString(time[i])+" ");
-//                }
+                writer.write(M+",");
+                for (long time : times) {
+                    writer.write(time + ",");
+                }
                 writer.newLine();
                 writer.flush();
                 writer.close();
             } else {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(f, true));
-                writer.write(M + " " + tprom + " " + aux1 + " " + aux2);
-//                for (int i = 0; i < time.length; i++) {
-//                   writer.write(Double.toString(time[i])+" ");
-//                }
+                writer.write(M+",");
+                for (long time : times) {
+                    writer.write(time + ",");
+                }
                 writer.newLine();
                 writer.flush();
                 writer.close();

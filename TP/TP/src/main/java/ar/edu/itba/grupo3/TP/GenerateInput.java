@@ -8,21 +8,18 @@ import java.util.Random;
 
 public class GenerateInput {
 
-    public static void inputGenerator() throws IOException {
-        generateInputs();
+    public static void inputGenerator(int N,int L) throws IOException {
+        generateInputs(N,L);
     }
 
 
     //N = #particles
     //L = lenght board
-    private static void generateInputs() throws IOException{
+    private static void generateInputs(int N,int L) throws IOException{
         Random r = new Random();
-        int N = r.nextInt(100); //pongo un max para que no explote
-        int L = r.nextInt(100);
-        //double rc = r.nextDouble(); //entre 0 y 1?
-
+        //particles radious between 0 and 1;
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(new File("resources/RandomStaticInput.txt")));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File("TP/TP/resources/RandomStaticInput.txt")));
             writer.write(Integer.toString(N));
             writer.newLine();
             writer.write(Integer.toString(L));
@@ -33,7 +30,7 @@ public class GenerateInput {
                 for(int j=0;j<2;j++){
                     double rad = r.nextDouble();
                     if(j!=1){
-                        writer.write(Double.toString(rad)+"   ");
+                        writer.write(rad+"    ");
                     }
                     else{
                         //write another property, 1 in this case because its an example
@@ -49,7 +46,7 @@ public class GenerateInput {
         }
 
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(new File("resources/RandomDynamicInput.txt")));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File("TP/TP/resources/RandomDynamicInput.txt")));
 
             writer.write("0"); //time of dynamic particles.
             writer.newLine();
@@ -58,7 +55,7 @@ public class GenerateInput {
                 for (int j = 0; j < 2; j++) {
                     double ran= r.nextDouble() * L;
                     if(j!=1){
-                        writer.write(ran + "   ");
+                        writer.write(ran + "    ");
                     }
                     else {
                         writer.write(Double.toString(ran));

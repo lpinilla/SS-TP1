@@ -7,7 +7,7 @@ import java.io.IOException;
 public class GenerateInputTest {
     @Test
     public void generateInputTest() throws IOException {
-        GenerateInput.inputGenerator();
+        GenerateInput.inputGenerator(100,100);
 
 
     }
