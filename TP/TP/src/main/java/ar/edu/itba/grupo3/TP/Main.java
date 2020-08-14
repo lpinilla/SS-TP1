@@ -36,13 +36,19 @@ public class Main {
                     timeAnalyzer(input);
 
                 } else {
-                    createRandomInputs(input);
-                    input.pathDynamic = "TP/TP/resources/RandomStaticInput.txt";
+                  // createRandomInputs(input);
+                    input.pathDynamic = "TP/TP/resources/RandomDynamicInput.txt";
                     input.pathStatic = "TP/TP/resources/RandomStaticInput.txt";
+                    long startTime = System.nanoTime();
                     neighbourAnalizer(input);
+                    long endTime = System.nanoTime();
+                    System.out.println("Tiempo: "+(endTime-startTime));
                 }
             } else {
+                long startTime = System.nanoTime();
                 neighbourAnalizer(input);
+                long endTime = System.nanoTime();
+                System.out.println("Tiempo: "+(endTime-startTime));
             }
         } catch (IOException e) {
             e.printStackTrace();
